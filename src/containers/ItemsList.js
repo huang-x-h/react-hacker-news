@@ -18,7 +18,7 @@ class ItemsList extends Component {
       <div className="Items">
         <ol className="Items__list">
           {stories.map((item => (
-            <Item item={item} />
+            <Item item={item} key={item.id} />
           )))}
         </ol>
         <Paginator />

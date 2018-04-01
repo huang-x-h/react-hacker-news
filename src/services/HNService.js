@@ -1,16 +1,15 @@
-import firebase from '@firebase/app';
+import firebase from '@firebase/app'
 import '@firebase/database'
 
 firebase.initializeApp({
   databaseURL: 'https://hacker-news.firebaseio.com'
 })
 
-let rootRef = firebase.database().ref('/v0');
+const api = firebase.database().ref('/v0');
 
 const fetch = (child) => {
   return new Promise((resolve, reject) => {
-    rootRef.child(child);
-    rootRef.once('value', snapshot => {
+    api.child(child).once('value', snapshot => {
       const val = snapshot.val();
       resolve(val);
     }, reject);

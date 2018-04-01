@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import TimeAgo from './TimeAgo'
 import Spinner from './Spinner'
-import { pluralise } from '../utils'
+import { pluralise, host } from '../utils'
 
 const ItemMeta = ({ id, type, time, text, title, url, by, score, dead, descendants }) => {
   if (type === 'job') {
@@ -41,7 +41,7 @@ const ItemTitle = ({ id, type, time, text, title, url, by, score, dead, descenda
     <div className="Item__title">
       {itemTitle}
       {hasURL && ' '}
-      {hasURL && <span className="Item__host">({url})</span>}
+      {hasURL && <span className="Item__host">({host(url)})</span>}
     </div>
   )
 }

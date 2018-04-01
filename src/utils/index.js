@@ -22,8 +22,16 @@ function pluralise(howMany, suffixes) {
   return (suffixes || ',s').split(',')[(howMany === 1 ? 0 : 1)]
 }
 
+function host(url) {
+  const host = url.replace(/^https?:\/\//, '').replace(/\/.*$/, '')
+  const parts = host.split('.').slice(-3)
+  if (parts[0] === 'www') parts.shift()
+  return parts.join('.')
+}
+
 export {
   timeFormat,
   constants,
-  pluralise
+  pluralise,
+  host
 }
