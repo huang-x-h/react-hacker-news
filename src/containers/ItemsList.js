@@ -6,9 +6,14 @@ import Paginator from '../components/Paginator'
 import { fetchStories } from '../actions'
 
 class ItemsList extends Component {
-
   componentDidMount() {
     this.props.dispatch(fetchStories(this.props.topic))
+  }
+
+  componentWillReceiveProps(prevProps, nextProps) {
+    if (prevProps.topic !== nextProps.topic) {
+      this.props.dispatch(fetchStories(nextProps.topic))
+    }
   }
 
   render() {

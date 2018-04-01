@@ -13,8 +13,8 @@ const App = () => (
       <Header />
       <div className="App__content">
         <Switch>
-          <Route path="/top" children={() => (<ItemsList topic="top" />)} />
-          <Route path="/new" children={() => (<ItemsList topic="new" />)} />
+          <Route path="/top" render={() => (<ItemsList topic="top" />)} />
+          <Route path="/new" render={() => (<ItemsList topic="new" />)} />
           <Route path="/user/:id" component={UserProfile} />
         </Switch>
       </div>

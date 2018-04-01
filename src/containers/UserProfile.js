@@ -1,28 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import User from '../components/User'
 import Spinner from '../components/Spinner'
 import { fetchUser } from '../actions'
 
 class UserProfile extends Component {
-  state = {}
-
-  static getDerivedStateFromProps = (nextProps, prevState) => {
-    if (nextProps.match.params.id !== prevState.id) {
-      return {
-        id: nextProps.match.params.id
-      };
-    }
-
-    return null
-  }
-
   componentDidMount() {
     this.props.fetchUser();
   }
 
-  componentDidUpdate() {
-    if (this.state.id) this.props.fetchUser(this.state.id);
+  componentWillReceiveProps(prevProps, nextProps) {
+    if (nextProps.match && (prevProps.match.params.id !== nextProps.match.params.id))
+      this.props.fetchUser(nextProps.match.params.id);
   }
 
   render() {
@@ -56,4 +46,4 @@ const mapDispatchToProps = (dispatch, ownProps) => (
   }
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile))
