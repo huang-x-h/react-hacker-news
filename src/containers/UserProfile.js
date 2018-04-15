@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import User from '../components/User';
 import Spinner from '../components/Spinner';
-import { fetchUser } from '../actions';
+import { fetchUser, FETCH_USER } from '../actions';
+import { createLoadingSelector } from '../redux/api/selectors';
 
 class UserProfile extends Component {
   componentDidMount() {
@@ -16,33 +17,32 @@ class UserProfile extends Component {
   }
 
   render() {
-    const {user, match} = this.props;
+    const { user, match, isFetching } = this.props;
 
-    if (user) {
-      return <User {...user} />
-    } else {
+    if (isFetching) {
       return (
         <div className="UserProfile UserProfile--loading">
           <h4>{match.params.id}</h4>
           <Spinner size="20" />
         </div>
       )
+    } else {
+      return <User {...user} />;
     }
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user
-  }
-}
+const loadingSelector = createLoadingSelector([FETCH_USER]);
 
-const mapDispatchToProps = (dispatch, ownProps) => (
-  {
-    fetchUser: (id = ownProps.match.params.id) => {
-      dispatch(fetchUser(id))
-    }
+const mapStateToProps = (state) => ({
+  user: state.user,
+  isFetching: loadingSelector(state)
+});
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  fetchUser: (id = ownProps.match.params.id) => {
+    dispatch(fetchUser(id))
   }
-)
+});
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile))

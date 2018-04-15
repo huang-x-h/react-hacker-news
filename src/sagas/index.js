@@ -14,15 +14,19 @@ function activeIds(ids, page) {
 function* fetchStories(action) {
   const { topic, page = 1 } = action;
   yield put({ type: SET_ACTIVE_TOPIC, topic });
+  yield put({type: `${FETCH_STORIES}_REQUEST`});
   const ids = yield fetchIdsByTopic(topic);
   yield put({ type: SET_LIST, topic, ids });
   const stories = yield fetchItems(activeIds(ids, page));
   yield put({ type: SET_STROTIES, topic, stories });
+  yield put({type: `${FETCH_STORIES}_SUCCESS`});
 }
 
 function* fetchUserProfile(action) {
   const { id } = action;
+  yield put({type: `${FETCH_USER}_REQUEST`});
   const user = yield fetchUser(id);
+  yield put({type: `${FETCH_USER}_SUCCESS`});
   yield put({ type: SET_USER, user });
 }
 

@@ -6,6 +6,7 @@
     "@firebase/app": "^0.1.10",
     "@firebase/database": "^0.2.1",
     "classnames": "^2.2.5",
+    "lodash": "^4.17.5",
     "prop-types": "^15.6.1",
     "react": "16.2.0",
     "react-dom": "16.2.0",
@@ -23,5 +24,9 @@
   },
   "devDependencies": {
     "prettier": "^1.11.1"
+  },
+  "author": {
+    "name": "huang.xinghui",
+    "email": "huang.x.hui@gmail.com"
   }
 }

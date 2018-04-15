@@ -1,4 +1,5 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
+import apiReducer from '../redux/api/reducers';
 import { SET_STROTIES, SET_ACTIVE_TOPIC, SET_LIST, SET_USER, SET_COMMENTS } from '../actions'
 
 function stories(state = {}, action) {
@@ -52,5 +53,6 @@ export default combineReducers({
   list,
   user,
   comments,
-  activeTopic
+  activeTopic,
+  'api': apiReducer
 });

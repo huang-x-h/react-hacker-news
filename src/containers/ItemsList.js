@@ -4,8 +4,9 @@ import { withRouter } from 'react-router-dom'
 import Item from '../components/Item'
 import Paginator from '../components/Paginator'
 import Spinner from '../components/Spinner'
-import { fetchStories } from '../actions'
+import { fetchStories, FETCH_STORIES } from '../actions'
 import { constants } from '../utils';
+import { createLoadingSelector } from '../redux/api/selectors';
 
 class ItemsList extends Component {
   componentDidMount() {
@@ -20,28 +21,33 @@ class ItemsList extends Component {
   }
 
   render() {
-    const stories = this.props.stories || [];
-    const total = this.props.ids && this.props.ids.length;
-    const page = Number(this.props.match.params.page) || 1;
+    const { isFetching, stories = [], match, ids } = this.props;
+    const total = ids && ids.length;
+    const page = Number(match.params.page) || 1;
     const startIndex = (page - 1) * constants.pageSize;
 
     return (
       <div className="Items">
-        <ol className="Items__list" start={startIndex + 1}>
-          {stories.map((item => (
-            <Item item={item} key={item.id} />
-          )))}
-        </ol>
+        {isFetching ? (<Spinner />) : (
+          <ol className="Items__list" start={startIndex + 1}>
+            {stories.map((item => (
+              <Item item={item} key={item.id} />
+            )))}
+          </ol>
+        )}
         <Paginator topic={this.props.topic} total={total} page={page} />
       </div>
     )
   }
 }
 
+const loadingSelector = createLoadingSelector([FETCH_STORIES]);
+
 const mapStateToProps = (state, ownProps) => {
   return {
     stories: state.stories[ownProps.topic],
-    ids: state.list[ownProps.topic]
+    ids: state.list[ownProps.topic],
+    isFetching: loadingSelector(state)
   }
 }
 
