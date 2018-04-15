@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import TimeAgo from './TimeAgo'
-import Spinner from './Spinner'
 import { pluralise, host } from '../utils'
 
 const ItemMeta = ({ id, type, time, text, title, url, by, score, dead, descendants }) => {
@@ -27,7 +26,6 @@ const ItemMeta = ({ id, type, time, text, title, url, by, score, dead, descendan
       <Link to={`/${type}/${id}`}>
         {descendants > 0 ? descendants + ' comment' + pluralise(descendants) : 'discuss'}
       </Link>
-      {text}
     </div>
   )
 }
@@ -46,23 +44,11 @@ const ItemTitle = ({ id, type, time, text, title, url, by, score, dead, descenda
   )
 }
 
-class Item extends Component {
-  render() {
-    if (!this.props.item) {
-      return (
-        <li className="ListItem ListItem--loading">
-          <Spinner />
-        </li>
-      )
-    }
-
-    return (
-      <li className={classnames('ListItem', { 'ListItem--dead': this.props.item.dead })}>
-        <ItemTitle {...this.props.item} />
-        <ItemMeta {...this.props.item} />
-      </li>
-    )
-  }
-}
+const Item = ({ item }) => (
+  <li className={classnames('ListItem', { 'ListItem--dead': item.dead })}>
+    <ItemTitle {...item} />
+    <ItemMeta {...item} />
+  </li>
+)
 
 export default Item
