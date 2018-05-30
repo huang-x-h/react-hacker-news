@@ -1,5 +1,6 @@
-import firebase from '@firebase/app'
-import '@firebase/database'
+import firebase from '@firebase/app';
+import '@firebase/database';
+import DataLoader from 'dataloader';
 
 firebase.initializeApp({
   databaseURL: 'https://hacker-news.firebaseio.com'
@@ -16,20 +17,22 @@ const fetch = (child) => {
   });
 }
 
+const fetchLoader = new DataLoader(keys => Promise.all(keys.map(key => fetch(key))));
+
 const fetchIdsByTopic = (topic) => {
-  return fetch(`${topic}stories`);
+  return fetchLoader.load(`${topic}stories`);
 };
 
 const fetchItem = id => {
-  return fetch(`item/${id}`);
+  return fetchLoader.load(`item/${id}`);
 }
 
 const fetchItems = ids => {
-  return Promise.all(ids.map(id => fetchItem(id)));
+  return fetchLoader.loadMany(ids.map(id => `item/${id}`));
 }
 
 const fetchUser = id => {
-  return fetch(`user/${id}`);
+  return fetchLoader(`user/${id}`);
 }
 
 export {
