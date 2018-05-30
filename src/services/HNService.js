@@ -32,7 +32,7 @@ const fetchItems = ids => {
 }
 
 const fetchUser = id => {
-  return fetchLoader(`user/${id}`);
+  return fetchLoader.load(`user/${id}`);
 }
 
 export {
