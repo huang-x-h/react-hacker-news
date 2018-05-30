@@ -11,11 +11,6 @@ class UserProfile extends Component {
     this.props.fetchUser();
   }
 
-  componentWillReceiveProps(prevProps, nextProps) {
-    if (nextProps.match && (prevProps.match.params.id !== nextProps.match.params.id))
-      this.props.fetchUser(nextProps.match.params.id);
-  }
-
   render() {
     const { user, match, isFetching } = this.props;
 

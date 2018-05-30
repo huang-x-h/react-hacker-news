@@ -10,13 +10,12 @@ import { createLoadingSelector } from '../redux/api/selectors';
 
 class ItemsList extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchStories(this.props.topic, 1))
+    this.props.dispatch(fetchStories(this.props.match.params.topic, 1))
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.topic !== nextProps.topic
-      || this.props.match.params.page !== nextProps.match.params.page) {
-      this.props.dispatch(fetchStories(nextProps.topic, this.props.match.params.page))
+    if (this.props.location !== nextProps.location) {
+      this.props.dispatch(fetchStories(nextProps.match.params.topic, nextProps.match.params.page));
     }
   }
 
@@ -35,7 +34,7 @@ class ItemsList extends Component {
             )))}
           </ol>
         )}
-        <Paginator topic={this.props.topic} total={total} page={page} />
+        <Paginator topic={match.params.topic} total={total} page={page} />
       </div>
     )
   }
@@ -44,9 +43,11 @@ class ItemsList extends Component {
 const loadingSelector = createLoadingSelector([FETCH_STORIES]);
 
 const mapStateToProps = (state, ownProps) => {
+  let topic = ownProps.match.params.topic;
+
   return {
-    stories: state.stories[ownProps.topic],
-    ids: state.list[ownProps.topic],
+    stories: state.stories[topic],
+    ids: state.list[topic],
     isFetching: loadingSelector(state)
   }
 }
